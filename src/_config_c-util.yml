@@ -1,0 +1,41 @@
+# Site configuration
+title: "c-util"
+name: "C-Util"
+description: "Common Utility Libraries for C11"
+author: "C-Util Project"
+
+# Resource configuration
+avatar: "images/c-util.svg"
+avatar_border: false
+favicon: "images/c-util.ico"
+url: "https://c-util.github.io"
+
+# Media handles
+media:
+  email: "bus1-devel@googlegroups.com"
+  github: "c-util"
+
+#
+# Generic Setup
+#
+
+collections:
+  projects_c-util:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: "_collections/_projects_*"
+    values:
+      layout: "project"
+      permalink: "/:title/"
+
+collections_dir: "_collections"
+
+plugins:
+  - jekyll-sitemap

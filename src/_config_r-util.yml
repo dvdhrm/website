@@ -1,0 +1,41 @@
+# Site configuration
+title: "r-util"
+name: "R-Util"
+description: "Common Utility Libraries for Rust"
+author: "R-Util Project"
+
+# Resource configuration
+avatar: "images/r-util.svg"
+avatar_border: false
+favicon: "images/r-util.ico"
+url: "https://r-util.github.io"
+
+# Media handles
+media:
+  email: "bus1-devel@googlegroups.com"
+  github: "r-util"
+
+#
+# Generic Setup
+#
+
+collections:
+  projects_r-util:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: "_collections/_projects_*"
+    values:
+      layout: "project"
+      permalink: "/:title/"
+
+collections_dir: "_collections"
+
+plugins:
+  - jekyll-sitemap

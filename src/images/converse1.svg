@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1024"
+   height="1024"
+   viewBox="0 0 1024 1024"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   sodipodi:docname="converse1.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="550.04396"
+     inkscape:cy="548.57143"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:pagecheckerboard="true"
+     showborder="true"
+     borderlayer="false"
+     inkscape:showpageshadow="true"
+     inkscape:window-width="2558"
+     inkscape:window-height="1418"
+     inkscape:window-x="0"
+     inkscape:window-y="20"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-26.06665)">
+    <path
+       d="M 251.15556,926.53203 C 546.81029,1001.3434 681.09001,581.95297 360.10677,581.95297 88.572136,321.91986 -44.510681,851.73217 251.15556,926.53203 Z M 534.3741,602.66481 c 27.31185,33.67266 112.27965,110.70678 6.59998,259.5087 C 728.96565,1007.8523 918.27956,854.86683 935.948,704.58297 954.9957,542.4328 811.6082,380.76128 651.39578,568.88973 c -37.55958,0.10763 -88.5244,8.74297 -117.02168,33.77508 z m 53.57504,-182.2009 c -15.10359,-29.06737 -26.36578,-56.99486 -37.14926,-96.69744 -10.772,-39.74815 -15.5254,-76.4186 0.85496,-104.49426 16.39173,-28.06422 14.24877,-59.60515 -9.0622,-66.91188 -23.32225,-7.36373 -27.22071,-2.1886 -44.45594,25.45388 -17.29218,27.64247 -36.29419,63.02484 -71.67668,125.19477 -35.42797,62.16993 -49.25481,94.144 -64.78019,143.34197 -5.32341,16.81344 -13.82699,47.97819 -14.2488,70.82168 -0.23964,12.86947 8.92539,25.54505 18.42082,19.09328 9.50673,-6.50885 10.07663,-29.87663 17.86207,-59.22897 7.73996,-29.35232 16.81358,-56.57303 40.99074,-104.91604 24.17723,-48.35443 46.78134,-83.4518 69.95537,-84.63731 23.1855,-1.18544 16.63116,48.05805 46.92961,112.80414 30.25279,64.73471 53.66618,92.27458 65.35023,109.56679 11.63824,17.24664 19.4351,30.20726 29.35219,20.27874 9.9286,-9.92843 5.60832,-12.53884 -3.88698,-30.62899 -9.50673,-18.14713 -29.39784,-49.97305 -44.45594,-79.04036 z M 846.13558,321.91986 C 821.19474,282.16029 715.51494,124.1935 560.59164,238.79865 c 1.14035,119.92846 79.50773,112.23414 146.61349,106.86522 67.11704,-5.36889 115.17507,-7.73987 138.93045,-23.74401 z"
+       id="Unnamed"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.13989604" />
+  </g>
+</svg>

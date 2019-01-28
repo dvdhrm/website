@@ -1,0 +1,46 @@
+---
+layout: root
+style_pair_key: "fl cl mr2 b"
+---
+<article>
+  <h1>{{ page.title }}</h1>
+
+  <dl class="ml4">
+    <dt class="{{ layout.style_pair_key }}">Repository:</dt>
+    <dd>
+      <a href="https://github.com/{{ site.title }}/{{ page.title }}">@GitHub</a>
+    </dd>
+    <dt class="{{ layout.style_pair_key }}">Issue-Tracker:</dt>
+    <dd>
+      <a href="https://github.com/{{ site.title }}/{{ page.title }}/issues">@GitHub</a></li>
+    </dd>
+{% if page.documentation %}
+    <dt class="{{ layout.style_pair_key }}">Documentation:</dt>
+    <dd>
+      {{ page.documentation }}
+    </dd>
+{% elsif page.collection == "projects_c-util" %}
+    <dt class="{{ layout.style_pair_key }}">Documentation:</dt>
+    <dd>
+      <a href="https://github.com/{{ site.title }}/{{ page.title }}/blob/master/src/{{ page.title }}.h">{{ page.title }}.h</a></li>
+    </dd>
+{% elsif page.collection == "projects_r-util" %}
+    <dt class="{{ layout.style_pair_key }}">Documentation:</dt>
+    <dd>
+      <a href="https://docs.rs/{{ page.title }}">docs.rs/{{ page.title }}</a></li>
+    </dd>
+{% endif %}
+{% if page.licenses %}
+    <dt class="{{ layout.style_pair_key }}">Licenses:</dt>
+    <dd class="cl">
+      <ul class="ma0">
+{% for license in page.licenses %}
+        <li class="i">{{ license }}</li>
+{% endfor %}
+      </ul>
+    </dd>
+{% endif %}
+  </dl>
+
+{{ content }}
+</article>

@@ -1,0 +1,41 @@
+# Site configuration
+title: "converse1"
+name: "Converse1"
+description: "Capability-based Linux Runtime"
+author: "Converse1 Project"
+
+# Resource configuration
+avatar: "images/converse1.svg"
+avatar_border: true
+favicon: "images/converse1.ico"
+url: "https://converse1.github.io"
+
+# Media handles
+media:
+  email: "converse1-devel@googlegroups.com"
+  github: "converse1"
+
+#
+# Generic Setup
+#
+
+collections:
+  projects_converse1:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: "_collections/_projects_*"
+    values:
+      layout: "project"
+      permalink: "/:title/"
+
+collections_dir: "_collections"
+
+plugins:
+  - jekyll-sitemap

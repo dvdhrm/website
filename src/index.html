@@ -1,0 +1,29 @@
+---
+---
+{% capture overview %}
+{% include {{ site.title }}/index_overview.md %}
+{% endcapture %}
+{{ overview | markdownify }}
+
+<h2 id="projects">Projects</h2>
+<ul>
+{% assign projects_name = "projects_" | append: site.title %}
+{% assign projects = site[projects_name] | sort: 'title' %}
+{% for project in projects %}
+  <li>
+    <p>
+      <a href="{{ project.url | relative_url }}"><strong>{{ project.title }}</strong></a>:
+      <em>{{ project.description }}</em>
+    </p>
+    {{ project.excerpt }}
+      <ul>
+        <li><strong>Repository</strong>: <a href="https://github.com/{{ site.title }}/{{ project.title }}">@github</a></li>
+      </ul>
+  </li>
+{% endfor %}
+</ul>
+
+{% capture underview %}
+{% include {{ site.title }}/index_underview.md %}
+{% endcapture %}
+{{ underview | markdownify }}
