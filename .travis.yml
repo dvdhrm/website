@@ -1,0 +1,20 @@
+os: linux
+dist: trusty
+language: ruby
+cache: bundler
+
+before_install:
+  - "./ci/ci.sh setup-keys"
+
+before_script:
+  - "./ci/ci.sh setup-repos"
+
+script:
+  - "./ci/ci.sh build"
+
+deploy:
+  - provider: script
+    script: "./ci/ci.sh deploy"
+    skip_cleanup: true
+    on:
+      branch: master
