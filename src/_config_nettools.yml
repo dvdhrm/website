@@ -1,0 +1,41 @@
+# Site configuration
+title: "nettools"
+name: "Nettools"
+description: "Linux Network Management Tools"
+author: "Nettools Project"
+
+# Resource configuration
+avatar: "images/nettools.svg"
+avatar_border: false
+favicon: "images/nettools.ico"
+url: "https://nettools.github.io"
+
+# Media handles
+media:
+  email: "nettools-devel@googlegroups.com"
+  github: "nettools"
+
+#
+# Generic Setup
+#
+
+collections:
+  projects_nettools:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: "_collections/_projects_*"
+    values:
+      layout: "project"
+      permalink: "/:title/"
+
+collections_dir: "_collections"
+
+plugins:
+  - jekyll-sitemap

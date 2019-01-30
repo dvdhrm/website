@@ -6,7 +6,7 @@ projects=(
 #        "bus1"         # key already added
         "c-util"
         "converse1"
-#        "nettools"     # key already added
+        "nettools"
         "r-util"
 )
 
