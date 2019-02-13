@@ -1,5 +1,7 @@
-converse1/websites - Common Website Sources
-===========================================
+converse1/websites
+==================
+
+Common Website Sources
 
 This is the source repository of several of our websites. It is also the
 canonical location of all project related artwork.
@@ -28,11 +30,11 @@ The requirements for this project are:
 
 To build the jekyll pages, run:
 
-```
-    $ jekyll build \
-        --config src/<config>.yml \
-        --source src \
-        --destination build/<target>
+```sh
+jekyll build \
+    --config src/<config>.yml \
+    --source src \
+    --destination build/<target>
 ```
 
 ### Repository:
