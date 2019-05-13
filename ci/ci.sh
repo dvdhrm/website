@@ -70,6 +70,11 @@ case "$1" in
                                                 -m "Regenerate web-pages"
                                 GIT_SSH_COMMAND="ssh -i ../../$KEY" \
                                         git push
+                                # Github Pages trips all over when pushing
+                                # changes from the same user too fast. For now,
+                                # lets just add a short timer. We can remove
+                                # that again when Github fixes this issue.
+                                sleep 60
                         )
                 done
                 ;;
