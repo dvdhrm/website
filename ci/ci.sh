@@ -61,10 +61,13 @@ case "$1" in
                         (
                                 cd "build/${project}"
                                 git add --all .
-                                git commit \
-                                        --allow-empty \
-                                        --author "Converse2 <david.rheinsberg+converse2@gmail.com>" \
-                                        -m "Regenerate web-pages"
+                                GIT_COMMITTER_NAME="Converse2" \
+                                GIT_COMMITTER_EMAIL="david.rheinsberg+converse2@gmail.com" \
+                                GIT_AUTHOR_NAME="Converse2" \
+                                GIT_AUTHOR_EMAIL="david.rheinsberg+converse2@gmail.com" \
+                                        git commit \
+                                                --allow-empty \
+                                                -m "Regenerate web-pages"
                                 GIT_SSH_COMMAND="ssh -i ../../$KEY" \
                                         git push
                         )
