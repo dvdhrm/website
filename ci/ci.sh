@@ -2,8 +2,9 @@
 
 set -e
 
+KEY="./ci/converse2-github-rsa.sec"
+
 projects=(
-#        "bus1"         # key already added
         "c-util"
         "converse1"
         "nettools"
@@ -11,48 +12,24 @@ projects=(
 )
 
 case "$1" in
-        new-keys)
-                for project in "${projects[@]}" ; do
-                        file="ci/ssh/${project}-web-rsa.sec"
-                        if test ! -f "$file" ; then
-                                ssh-keygen \
-                                        -t rsa \
-                                        -b 4096 \
-                                        -N "" \
-                                        -C "david.rheinsberg@gmail.com" \
-                                        -f "ci/ssh/${project}-web-rsa.sec"
-                        fi
-                done
-                ;;
-
-        pack-keys)
-                tar \
-                        -cv \
-                        --exclude "*.pub" \
-                        -f ci/ssh.tar \
-                        -C ci \
-                        ssh
+        pack-key)
                 travis \
                         encrypt-file \
                         --com \
                         --print-key \
-                        ci/ssh.tar \
-                        ci/ssh.tar.enc
+                        "$KEY" \
+                        "$KEY.enc"
                 ;;
 
-        setup-keys)
+        setup-key)
                 (
                         openssl aes-256-cbc \
                                 -K $encrypted_7fdda92792e6_key \
                                 -iv $encrypted_7fdda92792e6_iv \
-                                -in ci/ssh.tar.enc \
-                                -out ci/ssh.tar \
+                                -in "$KEY.enc" \
+                                -out "$KEY" \
                                 -d
-                        tar -xvf ci/ssh.tar -C ci
-
-                        for file in ci/ssh/*.sec ; do
-                                chmod 600 "$file"
-                        done
+                        chmod 600 "$KEY"
                 )
                 ;;
 
@@ -60,7 +37,7 @@ case "$1" in
                 rm -Rf "./build"
                 mkdir -p "./build"
                 for project in "${projects[@]}" ; do
-                        GIT_SSH_COMMAND="ssh -i ./ci/ssh/$project-web-rsa.sec" \
+                        GIT_SSH_COMMAND="ssh -i $KEY" \
                                 git clone \
                                         "git@github.com:${project}/${project}.github.io.git" \
                                         "build/${project}"
@@ -86,8 +63,9 @@ case "$1" in
                                 git add --all .
                                 git commit \
                                         --allow-empty \
+                                        --author "Converse2 <david.rheinsberg+converse2@gmail.com>" \
                                         -m "Regenerate web-pages"
-                                GIT_SSH_COMMAND="ssh -i ../../ci/ssh/$project-web-rsa.sec" \
+                                GIT_SSH_COMMAND="ssh -i ../../$KEY" \
                                         git push
                         )
                 done

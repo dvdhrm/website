@@ -5,7 +5,7 @@ language: ruby
 cache: bundler
 
 before_install:
-  - "./ci/ci.sh setup-keys"
+  - "./ci/ci.sh setup-key"
 
 before_script:
   - "./ci/ci.sh setup-repos"
