@@ -3,30 +3,91 @@ name: Continuous Integration
 on: [push, pull_request]
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
 
+    #
+    # Build Strategy
+    #
+    # We run the `ci` job once for each project we support. Each job is
+    # independent and will build and deploy the respective website. Before
+    # adding a project here, you must make sure the jekyll website
+    # configuration at `src/_config_<project>.yml` exists, the website
+    # repository exists on Github as `<project>/<project>.github.io`, and the
+    # `converse2` github automation bot has push access to it.
+    #
     strategy:
       matrix:
         project: [c-util, converse1, nettools, r-util]
 
     steps:
+      #
+      # Set Converse2 Access Token
+      #
+      # This step is solely provided to set some output variables we use in
+      # following steps. This is to work around some limitations in the
+      # github-actions expression evaluation. The following variables can be
+      # accessed from any following step:
+      #
+      #     ${{ steps.tokens.outputs.GITHUB_TOKEN }}
+      #         This is simply set to {{ github.token }} for completeness.
+      #
+      #     ${{ steps.tokens.outputs.CONVERSE2_TOKEN }}
+      #         This contains an access token to the `converse2` automation bot
+      #         account on github. If this action runs unprivileged, this is
+      #         set to the empty string (in this case the access token is not
+      #         passed to this action, so no way to access it).
+      #
+      #     ${{ steps.tokens.outputs.DEFAULT_TOKEN }}
+      #         This is set to the value of `CONVERSE2_TOKEN` if available,
+      #         otherwise it is equal to the value of `GITHUB_TOKEN`.
+      #
+      # Note that we go the extra step via environment variables to avoid
+      # pasting the secrets onto the command-line.
+      #
+    - name: Set Converse2 Access Token
+      id: tokens
+      env:
+        ENV_GITHUB_TOKEN: ${{ github.token }}
+        ENV_CONVERSE2_TOKEN: ${{ secrets.CONVERSE2_TOKEN }}
+      run: |
+        echo "::set-output name=GITHUB_TOKEN::${ENV_GITHUB_TOKEN}"
+        echo "::set-output name=CONVERSE2_TOKEN::${ENV_CONVERSE2_TOKEN}"
+        if [[ ! -z "${ENV_CONVERSE2_TOKEN}" ]] ; then
+          echo "::set-output name=DEFAULT_TOKEN::${ENV_CONVERSE2_TOKEN}"
+        else
+          echo "::set-output name=DEFAULT_TOKEN::${ENV_GITHUB_TOKEN}"
+        fi
+
+      #
+      # Setup Checkout
+      #
+      # The following steps perform setup steps for the checkout. We enable
+      # ruby for `jekyll`, we checkout the source directory, and we checkout
+      # the target directory to deploy to, if required.
+      #
     - name: Setup Ruby
       uses: actions/setup-ruby@v1
-
     - name: Fetch Website Sources
       uses: actions/checkout@v2
       with:
         path: source
-
     - name: Fetch Target Repository
       uses: actions/checkout@v2
       with:
         repository: ${{ matrix.project }}/${{ matrix.project }}.github.io
         ref: master
-        token: ${{ secrets.CONVERSE2_TOKEN }}
+        token: ${{ steps.tokens.outputs.DEFAULT_TOKEN }}
         path: build/${{ matrix.project }}
 
+      #
+      # Fetch Ruby Dependencies
+      #
+      # This creates a new Gemfile with all our dependencies. We use it this
+      # way to always get the newest versions. We then use the Bundler Cache to
+      # fetch possibly cached dependencies. As final step, we install any
+      # missing dependencies that were not cached.
+      #
     - name: Specify Ruby Dependencies
       run: |
         bundle config path ${{ github.workspace }}/vendor/bundle
@@ -35,19 +96,23 @@ jobs:
         bundle add --skip-install jekyll-sitemap
         bundle add --skip-install jekyll-feed
         bundle add --skip-install html-proofer
-
     - name: Setup Ruby Bundler Cache
       uses: actions/cache@v1
       with:
         path: ${{ github.workspace }}/vendor/bundle
         key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-
+        restore-keys: ${{ runner.os }}-gems-
     - name: Install Ruby Dependencies
-      run: |
-        bundle install
+      run: bundle install
 
+      #
+      # Build and Test Pages
+      #
+      # This performs the actual build-step. It builds the jekyll pages for the
+      # target project selected in the build-matrix. The output is directly put
+      # into the output repository, preparing it for deployment. We also run
+      # the html-proofer on the result, to verify the documents are valid pages.
+      #
     - name: Build Jekyll pages
       run: |
         bundle exec jekyll build \
@@ -55,13 +120,9 @@ jobs:
           --config source/src/_config_${{ matrix.project }}.yml \
           --source source/src \
           --destination build/${{ matrix.project }}
-
     - name: Run HTML Proofer
-      run: |
-        bundle exec htmlproofer "build/${{ matrix.project }}"
-
-    - name: Deploy Pages
-      if: github.ref == 'refs/heads/master'
+      run: bundle exec htmlproofer "build/${{ matrix.project }}"
+    - name: Prepare Deployment
       working-directory: build/${{ matrix.project }}
       run: |
         git add --all .
@@ -72,4 +133,18 @@ jobs:
           git commit \
             --allow-empty \
             -m "Regenerate web-pages"
-        git push
+
+      #
+      # Deploy Pages
+      #
+      # This deploys the generated pages. We simply push the commit into the
+      # target repository.
+      #
+      # We only deploy on the master branch, and only if we actually have
+      # access to the Converse2 Token (i.e., this makes sure the deploy is
+      # skipped in forked repositories, rather than failing).
+      #
+    - name: Deploy Pages
+      if: steps.tokens.outputs.CONVERSE2_TOKEN != '' && github.ref == 'refs/heads/master'
+      working-directory: build/${{ matrix.project }}
+      run: git push
