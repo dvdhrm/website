@@ -1,0 +1,75 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project: [c-util, r-util]
+
+    steps:
+    - name: Setup Ruby
+      uses: actions/setup-ruby@v1
+
+    - name: Fetch Website Sources
+      uses: actions/checkout@v2
+      with:
+        path: source
+
+    - name: Fetch Target Repository
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ matrix.project }}/${{ matrix.project }}.github.io
+        ref: master
+        token: ${{ secrets.CONVERSE2_TOKEN }}
+        path: build/${{ matrix.project }}
+
+    - name: Specify Ruby Dependencies
+      run: |
+        bundle config path ${{ github.workspace }}/vendor/bundle
+        bundle init
+        bundle add --skip-install jekyll
+        bundle add --skip-install jekyll-sitemap
+        bundle add --skip-install jekyll-feed
+        bundle add --skip-install html-proofer
+
+    - name: Setup Ruby Bundler Cache
+      uses: actions/cache@v1
+      with:
+        path: ${{ github.workspace }}/vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Install Ruby Dependencies
+      run: |
+        bundle install
+
+    - name: Build Jekyll pages
+      run: |
+        bundle exec jekyll build \
+          --future \
+          --config source/src/_config_${{ matrix.project }}.yml \
+          --source source/src \
+          --destination build/${{ matrix.project }}
+
+    - name: Run HTML Proofer
+      run: |
+        bundle exec htmlproofer "build/${{ matrix.project }}"
+
+    - name: Deploy Pages
+      if: github.ref == 'refs/heads/master'
+      working-directory: build/${{ matrix.project }}
+      run: |
+        git add --all .
+        GIT_COMMITTER_NAME="Converse2" \
+        GIT_COMMITTER_EMAIL="david.rheinsberg+converse2@gmail.com" \
+        GIT_AUTHOR_NAME="Converse2" \
+        GIT_AUTHOR_EMAIL="david.rheinsberg+converse2@gmail.com" \
+          git commit \
+            --allow-empty \
+            -m "Regenerate web-pages"
+        git push

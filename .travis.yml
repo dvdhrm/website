@@ -13,9 +13,9 @@ before_script:
 script:
   - "./ci/ci.sh build"
 
-deploy:
-  - provider: script
-    script: "./ci/ci.sh deploy"
-    skip_cleanup: true
-    on:
-      branch: master
+#deploy:
+#  - provider: script
+#    script: "./ci/ci.sh deploy"
+#    skip_cleanup: true
+#    on:
+#      branch: master
