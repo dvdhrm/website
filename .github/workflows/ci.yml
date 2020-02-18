@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        project: [c-util, r-util]
+        project: [c-util, converse1, nettools, r-util]
 
     steps:
     - name: Setup Ruby
